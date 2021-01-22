@@ -42,52 +42,35 @@ void getPlate(cv::Mat original, int height, int width)
 	}
 }
 
-//stackoverflow for instructions:
-//stackoverflow.com/questions/26270821/segmenting-characters-from-`age
-
-//Histogram Equalisation 
-//www.geeksforgeeks.org/histogram-equalisation-in-c-image-processing/
 
 unsigned char* histogramEqualisation(unsigned char* image, int w, int h)
 {
-	// Declaring 2 arrays for storing histogram values (frequencies) and 
-	// new gray level values (newly mapped pixel values as per algorithm) 
 	int hist[256] = { 0 };
 	int new_gray_level[256] = { 0 };
 
 	unsigned char* result = new unsigned char[w * h];
 
-	// Calculating frequency of occurrence for all pixel values 
 	for (int y = 0; y < h; y++)
 		for (int x = 0; x < w; x++)
 			hist[(int)image[y * w + x]]++;
 
-	// calculating total number of pixels 
 	int total = w * h;
 
 	int curr = 0;
-
-	// calculating cumulative frequency and new gray levels 
+ 
 	for (int i = 0; i < 256; i++) {
-		// cumulative frequency 
+		// calcul frecventa cumulativa
 		curr += hist[i];
-
-		// calculating new gray level after multiplying by 
-		// maximum gray count which is 255 and dividing by 
-		// total number of pixels 
 		new_gray_level[i] = round((((float)curr) * 255) / total);
 	}
 
 
-	// performing histogram equalisation by mapping new gray levels 
 	for (int y = 0; y < h; y++)
 		for (int x = 0; x < w; x++)
 			result[y * w + x] = (unsigned char)new_gray_level[image[y * w + x]];
 
 	return result;
 }
-
-//towardsdatascience.com/segmentation-in-ocr-10de176cf373
 
 
 unsigned char* binarizeImage(unsigned char* img, int w, int h, int threshold)
